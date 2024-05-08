@@ -8,12 +8,17 @@ contract Storage{
 
    function migratePoints(address signer, uint256 points,uint256 nonce, bytes memory signature) external  returns(bool) {
       require(nonce == nonces[signer], "Invalid nonce");
+      // get message hash
       bytes32 messageHash = getMessageHash(points, nonce);
+      // get signed hash
       bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+      // ensure signature has not bene used 
       require(!usedSignatures[ethSignedMessageHash], "Signature has already been used");
-
+      // check if siners match
       require(recover(ethSignedMessageHash, signature) == signer, "Invalid signature");
+      // increment user nonce
       nonces[signer]++;
+      // mark signature as used
       usedSignatures[ethSignedMessageHash] = true;
    }  
 
