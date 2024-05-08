@@ -12,9 +12,9 @@ contract Storage{
       bytes32 messageHash = getMessageHash(points, nonce);
       // get signed hash
       bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
-      // ensure signature has not bene used 
+      // ensure signature has not been used 
       require(!usedSignatures[ethSignedMessageHash], "Signature has already been used");
-      // check if siners match
+      // check if signers match
       require(recover(ethSignedMessageHash, signature) == signer, "Invalid signature");
       // increment user nonce
       nonces[signer]++;
